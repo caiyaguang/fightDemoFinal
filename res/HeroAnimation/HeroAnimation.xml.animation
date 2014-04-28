@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<AnimationProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ProjectDir>Z:\Documents\Work\project\trunk\client_seiya\trunk\bone\fightdemo\res\HeroAnimation</ProjectDir>
+  <Version>1.3.0.1</Version>
+  <Resources>Z:\Documents\Work\project\trunk\client_seiya\trunk\bone\fightdemo\res\HeroAnimation\Resources</Resources>
+  <Name>Hero</Name>
+  <JsonFileName>Hero.json</JsonFileName>
+  <JsonFolder>Z:\Documents\Work\project\trunk\client_seiya\trunk\bone\fightdemo\res\HeroAnimation\Json</JsonFolder>
+  <JsonList />
+  <CanvasSize>
+    <Width>0</Width>
+    <Height>0</Height>
+  </CanvasSize>
+  <filePath>Z:\Documents\Work\project\trunk\client_seiya\trunk\bone\fightdemo\res\HeroAnimation\HeroAnimation.xml.animation</filePath>
+  <ProjectType>AnimationProject</ProjectType>
+  <ResRelativePath />
+  <ResourceFileList>
+    <string>Hero0.plist</string>
+  </ResourceFileList>
+  <bBatchImage>true</bBatchImage>
+</AnimationProject>

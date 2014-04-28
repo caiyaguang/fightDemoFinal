@@ -1,0 +1,51 @@
+<skeleton name="FrameAnimation" frameRate="24" version="2.2">
+  <armatures>
+    <armature name="iceEffect">
+      <b name="bone" x="0" y="0" kX="0" kY="0" cX="1" cY="1" pX="18" pY="76" z="0">
+        <d name="iceEffectFolder-位图 1" pX="0" pY="0"/>
+        <d name="iceEffectFolder-位图 2" pX="0" pY="0"/>
+        <d name="iceEffectFolder-9" pX="0" pY="0"/>
+        <d name="iceEffectFolder-8" pX="0" pY="0"/>
+        <d name="iceEffectFolder-7" pX="0" pY="0"/>
+        <d name="iceEffectFolder-5" pX="0" pY="0"/>
+        <d name="iceEffectFolder-4" pX="0" pY="0"/>
+        <d name="iceEffectFolder-6" pX="0" pY="0"/>
+        <d name="iceEffectFolder-2" pX="0" pY="0"/>
+        <d name="iceEffectFolder-1" pX="0" pY="0"/>
+        <d name="iceEffectFolder-11" pX="0" pY="0"/>
+      </b>
+    </armature>
+  </armatures>
+  <animations>
+    <animation name="iceEffect">
+      <mov name="play" dr="19" to="6" drTW="19" lp="0" twE="NaN">
+        <b name="bone" sc="1" dl="0">
+          <f x="0" y="0" cocos2d_x="-18" cocos2d_y="-76" kX="0" kY="0" cX="1" cY="1" pX="18" pY="76" z="0" dI="0" dr="1"/>
+          <f x="0" y="0" cocos2d_x="-22" cocos2d_y="-165" kX="0" kY="0" cX="1" cY="1" pX="22" pY="165" z="0" dI="1" dr="2"/>
+          <f x="0" y="0" cocos2d_x="-30" cocos2d_y="-200" kX="0" kY="0" cX="1" cY="1" pX="30" pY="200" z="0" dI="2" dr="2"/>
+          <f x="0" y="0" cocos2d_x="-30" cocos2d_y="-200" kX="0" kY="0" cX="1" cY="1" pX="30" pY="200" z="0" dI="3" dr="2"/>
+          <f x="0" y="0" cocos2d_x="-30" cocos2d_y="-200" kX="0" kY="0" cX="1" cY="1" pX="30" pY="200" z="0" dI="4" dr="2"/>
+          <f x="0" y="0" cocos2d_x="-30" cocos2d_y="-200" kX="0" kY="0" cX="1" cY="1" pX="30" pY="200" z="0" dI="5" dr="2"/>
+          <f x="0" y="0" cocos2d_x="-30" cocos2d_y="-200" kX="0" kY="0" cX="1" cY="1" pX="30" pY="200" z="0" dI="6" dr="2"/>
+          <f x="0" y="0" cocos2d_x="-30" cocos2d_y="-200" kX="0" kY="0" cX="1" cY="1" pX="30" pY="200" z="0" dI="7" dr="2"/>
+          <f x="0" y="0" cocos2d_x="-30" cocos2d_y="-200" kX="0" kY="0" cX="1" cY="1" pX="30" pY="200" z="0" dI="8" dr="2"/>
+          <f x="0" y="0" cocos2d_x="-30" cocos2d_y="-200" kX="0" kY="0" cX="1" cY="1" pX="30" pY="200" z="0" dI="9" dr="1"/>
+          <f x="0" y="0" cocos2d_x="-30" cocos2d_y="-200" kX="0" kY="0" cX="1" cY="1" pX="30" pY="200" z="0" dI="10" dr="1"/>
+        </b>
+      </mov>
+    </animation>
+  </animations>
+  <TextureAtlas name="FrameAnimation" width="1024" height="512">
+    <SubTexture name="iceEffectFolder-11" width="132" height="204" cocos2d_pX="0" cocos2d_pY="0" x="804" y="0"/>
+    <SubTexture name="iceEffectFolder-1" width="132" height="204" cocos2d_pX="0" cocos2d_pY="0" x="268" y="0"/>
+    <SubTexture name="iceEffectFolder-2" width="132" height="204" cocos2d_pX="0" cocos2d_pY="0" x="0" y="206"/>
+    <SubTexture name="iceEffectFolder-6" width="132" height="204" cocos2d_pX="0" cocos2d_pY="0" x="536" y="0"/>
+    <SubTexture name="iceEffectFolder-4" width="132" height="204" cocos2d_pX="0" cocos2d_pY="0" x="134" y="206"/>
+    <SubTexture name="iceEffectFolder-5" width="132" height="204" cocos2d_pX="0" cocos2d_pY="0" x="0" y="0"/>
+    <SubTexture name="iceEffectFolder-7" width="132" height="204" cocos2d_pX="0" cocos2d_pY="0" x="134" y="0"/>
+    <SubTexture name="iceEffectFolder-8" width="132" height="204" cocos2d_pX="0" cocos2d_pY="0" x="402" y="0"/>
+    <SubTexture name="iceEffectFolder-9" width="132" height="204" cocos2d_pX="0" cocos2d_pY="0" x="670" y="0"/>
+    <SubTexture name="iceEffectFolder-位图 2" width="106" height="169" cocos2d_pX="0" cocos2d_pY="0" x="268" y="206"/>
+    <SubTexture name="iceEffectFolder-位图 1" width="51" height="80" cocos2d_pX="0" cocos2d_pY="0" x="938" y="0"/>
+  </TextureAtlas>
+</skeleton>
