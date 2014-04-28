@@ -222,13 +222,6 @@ function BattleField:getEnemys(  )
     return self.enemys_
 end
 
-
-
-
-
-
-
-
 function BattleField:getStartAtker(  )
     for i=1,#self.players_ do
         local player = self.players_[i]

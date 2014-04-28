@@ -86,11 +86,15 @@ function FightController:getOneAtkTargets( atker,skill )
     local targets = {}
     if atker:getSide() == 0 then
         for k,v in pairs(self.enemyHeros_) do
-            table.insert(targets,v)
+            if not v:isDead() then
+                table.insert(targets,v)
+            end
         end
     else
         for k,v in pairs(self.playerHeros_) do
-            table.insert(targets,v)
+            if not v:isDead() then
+                table.insert(targets,v)
+            end
         end
     end
     return targets
@@ -109,9 +113,10 @@ function FightController:enterNextRound( round )
             haveeffect = 0,
             atktype = 0,
             damagetype = 0,
-            damage = 1000000,
+            damage = 100,
             cdtime = 2,
-            totalmp = 100,
+            totalmp = 0,
+            skilltype = "commonskill",
             caninterrupt = 0
             }
     local kuihuaSkill = {
@@ -123,8 +128,9 @@ function FightController:enterNextRound( round )
             haveeffect = 0,
             atktype = 1,
             damagetype = 0,
-            damage = 6900000,
+            damage = 69,
             cdtime = 5,
+            skilltype = "giftskill",
             totalmp = 100
             }
     local jianaiSkill = {
@@ -138,7 +144,8 @@ function FightController:enterNextRound( round )
             damagetype = 0,
             damage = 43,
             cdtime = 8,
-            totalmp = 100
+            skilltype = "commonskill",
+            totalmp = 0
             }
     local qishangSkill = {
             sid = "skill002",
@@ -151,6 +158,7 @@ function FightController:enterNextRound( round )
             damagetype = 0,
             damage = 99,
             cdtime = 12,
+            skilltype = "giftskill",
             totalmp = 100
             }
     local player1 = Actor.new({
@@ -202,6 +210,7 @@ function FightController:enterNextRound( round )
         cc.EventProxy.new(player, self)
             :addEventListener(cls.PLAYER_MODEL_LAUNCH_SKILL_ATK, self.playerLaunchSkillAtk_, self)
             :addEventListener(cls.ADD_SKILL_EFFECT_EVENT, self.addSkillEffect_, self)
+        player:setCanAtkTargets(self:getOneAtkTargets(player,player:getSkills().giftskill))
     end
     for k,v in pairs(self.enemyHeros_) do
         local enemy = v
@@ -209,6 +218,7 @@ function FightController:enterNextRound( round )
         cc.EventProxy.new(enemy, self)
             :addEventListener(cls.PLAYER_MODEL_LAUNCH_SKILL_ATK, self.playerLaunchSkillAtk_, self)
             :addEventListener(cls.ADD_SKILL_EFFECT_EVENT, self.addSkillEffect_, self)
+        enemy:setCanAtkTargets(self:getOneAtkTargets(enemy,enemy:getSkills().giftskill))
     end
 
     -- 告诉战场模型可以根据英雄模型建立英雄视图等
@@ -219,8 +229,10 @@ end
 
 function FightController:playerLaunchSkillAtk_( event )
     -- 得到攻击者和技能
+
     local atker = event.atker
     local skill = event.skill
+
     --  如果改英雄正在进行攻击，开始调用战场模型的取消攻击方法
     -- 返回turu或者false
 

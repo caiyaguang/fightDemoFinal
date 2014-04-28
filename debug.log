@@ -19,68 +19,36 @@ Cocos2d: lua_loadChunksFromZIP() - loaded chunks count: 54
 Cocos2d: ------------------------------------------------
 Cocos2d: LOAD LUA FILE: /Users/tlwk/Documents/Work/project/trunk/client_seiya/trunk/bone/fightdemo/scripts/main.lua
 Cocos2d: ------------------------------------------------
-Cocos2d: [0.0090] [INFO] 
-Cocos2d: [0.0090] [INFO] # DEBUG                        = 2
-Cocos2d: [0.0090] [INFO] #
-Cocos2d: [0.0090] [INFO] # device.platform              = mac
-Cocos2d: [0.0090] [INFO] # device.model                 = unknown
-Cocos2d: [0.0090] [INFO] # device.language              = cn
-Cocos2d: [0.0090] [INFO] # device.writablePath          = /Users/tlwk/Documents/Work/project/trunk/client_seiya/trunk/bone/fightdemo/
-Cocos2d: [0.0091] [INFO] # device.cachePath             = /Users/tlwk/Documents/Work/project/trunk/client_seiya/trunk/bone/fightdemo/
-Cocos2d: [0.0091] [INFO] # device.directorySeparator    = /
-Cocos2d: [0.0091] [INFO] # device.pathSeparator         = :
-Cocos2d: [0.0091] [INFO] #
-Cocos2d: [0.0103] [INFO] # CONFIG_SCREEN_AUTOSCALE      = function: 0x14ec38e8
-Cocos2d: [0.0103] [INFO] # CONFIG_SCREEN_WIDTH          = 960.00
-Cocos2d: [0.0103] [INFO] # CONFIG_SCREEN_HEIGHT         = 640.00
-Cocos2d: [0.0104] [INFO] # display.widthInPixels        = 960.00
-Cocos2d: [0.0104] [INFO] # display.heightInPixels       = 640.00
-Cocos2d: [0.0104] [INFO] # display.contentScaleFactor   = 1.00
-Cocos2d: [0.0104] [INFO] # display.width                = 960.00
-Cocos2d: [0.0104] [INFO] # display.height               = 640.00
-Cocos2d: [0.0104] [INFO] # display.cx                   = 480.00
-Cocos2d: [0.0104] [INFO] # display.cy                   = 320.00
-Cocos2d: [0.0104] [INFO] # display.left                 = 0.00
-Cocos2d: [0.0104] [INFO] # display.right                = 960.00
-Cocos2d: [0.0104] [INFO] # display.top                  = 640.00
-Cocos2d: [0.0104] [INFO] # display.bottom               = 0.00
-Cocos2d: [0.0104] [INFO] # display.c_left               = -480.00
-Cocos2d: [0.0104] [INFO] # display.c_right              = 480.00
-Cocos2d: [0.0104] [INFO] # display.c_top                = 320.00
-Cocos2d: [0.0104] [INFO] # display.c_bottom             = -320.00
-Cocos2d: [0.0104] [INFO] #
-Cocos2d: [0.0484] [INFO] Scene "MainScene:onEnter()"
-Cocos2d: [2.8100] [INFO] Scene "MainScene:onEnter()"
-Cocos2d: [3.4413] [INFO] Scene "MainScene:onExit()"
-Cocos2d: [9.8252] ERROR: error INVALID_TRANSITION_ERROR, event enatk, from idle to idle
-Cocos2d: [9.8253] [ERR] event enatk inappropriate in current state idle
-Cocos2d: [9.8253] 
-stack traceback:
-	[string "framework.cc.components.behavior.StateMachine"]: in function 'onError_'
-	[string "framework.cc.components.behavior.StateMachine"]: in function 'doEvent'
-	[string "/Users/tlwk/Documents/Work/project/trunk/client_seiya/trunk/bone/fightdemo/scripts/app/models/SkillModel.lua"]:325: in function 'enterAtk'
-	[string "/Users/tlwk/Documents/Work/project/trunk/client_seiya/trunk/bone/fightdemo/scripts/app/views/BattleView.lua"]:265: in function <[string "/Users/tlwk/Documents/Work/project/trunk/client_seiya/trunk/bone/fightdemo/scripts/app/views/BattleView.lua"]:228>
-	[string "framework.cc.components.behavior.EventProtocol"]: in main chunk
-	[string "framework.cc.components.Component"]: in function 'dispatchEvent'
-	[string "/Users/tlwk/Documents/Work/project/trunk/client_seiya/trunk/bone/fightdemo/scripts/app/models/BattleField.lua"]:367: in function 'addSkillEffect'
-	[string "/Users/tlwk/Documents/Work/project/trunk/client_seiya/trunk/bone/fightdemo/scripts/app/controller/FightController.lua"]:260: in function <[string "/Users/tlwk/Documents/Work/project/trunk/client_seiya/trunk/bone/fightdemo/scripts/app/controller/FightController.lua"]:255>
-	[string "framework.cc.components.behavior.EventProtocol"]: in main chunk
-	[string "framework.cc.components.Component"]: in function 'dispatchEvent'
-	[string "/Users/tlwk/Documents/Work/project/trunk/client_seiya/trunk/bone/fightdemo/scripts/app/models/Actor.lua"]:271: in function 'addSkillEffect'
-	[string "/Users/tlwk/Documents/Work/project/trunk/client_seiya/trunk/bone/fightdemo/scripts/app/views/SkeletonHeroView.lua"]:272: in function <[string "/Users/tlwk/Documents/Work/project/trunk/client_seiya/trunk/bone/fightdemo/scripts/app/views/SkeletonHeroView.lua"]:266>
-Cocos2d: [25.1245] ERROR: error INVALID_TRANSITION_ERROR, event enatk, from idle to idle
-Cocos2d: [25.1245] [ERR] event enatk inappropriate in current state idle
-Cocos2d: [25.1245] 
-stack traceback:
-	[string "framework.cc.components.behavior.StateMachine"]: in function 'onError_'
-	[string "framework.cc.components.behavior.StateMachine"]: in function 'doEvent'
-	[string "/Users/tlwk/Documents/Work/project/trunk/client_seiya/trunk/bone/fightdemo/scripts/app/models/SkillModel.lua"]:325: in function 'enterAtk'
-	[string "/Users/tlwk/Documents/Work/project/trunk/client_seiya/trunk/bone/fightdemo/scripts/app/views/BattleView.lua"]:265: in function <[string "/Users/tlwk/Documents/Work/project/trunk/client_seiya/trunk/bone/fightdemo/scripts/app/views/BattleView.lua"]:228>
-	[string "framework.cc.components.behavior.EventProtocol"]: in main chunk
-	[string "framework.cc.components.Component"]: in function 'dispatchEvent'
-	[string "/Users/tlwk/Documents/Work/project/trunk/client_seiya/trunk/bone/fightdemo/scripts/app/models/BattleField.lua"]:367: in function 'addSkillEffect'
-	[string "/Users/tlwk/Documents/Work/project/trunk/client_seiya/trunk/bone/fightdemo/scripts/app/controller/FightController.lua"]:260: in function <[string "/Users/tlwk/Documents/Work/project/trunk/client_seiya/trunk/bone/fightdemo/scripts/app/controller/FightController.lua"]:255>
-	[string "framework.cc.components.behavior.EventProtocol"]: in main chunk
-	[string "framework.cc.components.Component"]: in function 'dispatchEvent'
-	[string "/Users/tlwk/Documents/Work/project/trunk/client_seiya/trunk/bone/fightdemo/scripts/app/models/Actor.lua"]:271: in function 'addSkillEffect'
-	[string "/Users/tlwk/Documents/Work/project/trunk/client_seiya/trunk/bone/fightdemo/scripts/app/views/SkeletonHeroView.lua"]:272: in function <[string "/Users/tlwk/Documents/Work/project/trunk/client_seiya/trunk/bone/fightdemo/scripts/app/views/SkeletonHeroView.lua"]:266>
+Cocos2d: [0.0091] [INFO] 
+Cocos2d: [0.0092] [INFO] # DEBUG                        = 2
+Cocos2d: [0.0092] [INFO] #
+Cocos2d: [0.0092] [INFO] # device.platform              = mac
+Cocos2d: [0.0092] [INFO] # device.model                 = unknown
+Cocos2d: [0.0092] [INFO] # device.language              = cn
+Cocos2d: [0.0092] [INFO] # device.writablePath          = /Users/tlwk/Documents/Work/project/trunk/client_seiya/trunk/bone/fightdemo/
+Cocos2d: [0.0092] [INFO] # device.cachePath             = /Users/tlwk/Documents/Work/project/trunk/client_seiya/trunk/bone/fightdemo/
+Cocos2d: [0.0092] [INFO] # device.directorySeparator    = /
+Cocos2d: [0.0092] [INFO] # device.pathSeparator         = :
+Cocos2d: [0.0092] [INFO] #
+Cocos2d: [0.0106] [INFO] # CONFIG_SCREEN_AUTOSCALE      = function: 0x11d2b500
+Cocos2d: [0.0106] [INFO] # CONFIG_SCREEN_WIDTH          = 960.00
+Cocos2d: [0.0106] [INFO] # CONFIG_SCREEN_HEIGHT         = 640.00
+Cocos2d: [0.0106] [INFO] # display.widthInPixels        = 960.00
+Cocos2d: [0.0106] [INFO] # display.heightInPixels       = 640.00
+Cocos2d: [0.0106] [INFO] # display.contentScaleFactor   = 1.00
+Cocos2d: [0.0106] [INFO] # display.width                = 960.00
+Cocos2d: [0.0106] [INFO] # display.height               = 640.00
+Cocos2d: [0.0106] [INFO] # display.cx                   = 480.00
+Cocos2d: [0.0107] [INFO] # display.cy                   = 320.00
+Cocos2d: [0.0107] [INFO] # display.left                 = 0.00
+Cocos2d: [0.0107] [INFO] # display.right                = 960.00
+Cocos2d: [0.0107] [INFO] # display.top                  = 640.00
+Cocos2d: [0.0107] [INFO] # display.bottom               = 0.00
+Cocos2d: [0.0107] [INFO] # display.c_left               = -480.00
+Cocos2d: [0.0107] [INFO] # display.c_right              = 480.00
+Cocos2d: [0.0107] [INFO] # display.c_top                = 320.00
+Cocos2d: [0.0107] [INFO] # display.c_bottom             = -320.00
+Cocos2d: [0.0107] [INFO] #
+Cocos2d: [0.0530] [INFO] Scene "MainScene:onEnter()"
+Cocos2d: [0.7388] [INFO] Scene "MainScene:onEnter()"
+Cocos2d: [1.3748] [INFO] Scene "MainScene:onExit()"

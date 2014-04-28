@@ -44,6 +44,10 @@ SkillModel.SKILL_CAN_ATK_STATE_CHANGE_EVENT = "SKILL_CAN_ATK_STATE_CHANGE_EVENT"
 
 SkillModel.SKILL_WANT_ATK_EVENT = "SKILL_WANT_ATK_EVENT"
 
+SkillModel.SKILL_ENABLE_ATK_EVENT = "SKILL_ENABLE_ATK_EVENT"
+
+SkillModel.SKILL_DISABLE_ATK_EVENT = "SKILL_DISABLE_ATK_EVENT"
+
 SkillModel.ONE_SORT_ATK = 0         -- 一次性攻击
 SkillModel.CONTINUE_ATK = 1         -- 持续性攻击
 -- 技能的模型类   
@@ -66,6 +70,7 @@ SkillModel.schema["herototalhp"] = {"number",100}
 -- 技能的冷却时间
 SkillModel.schema["cdtime"] = {"number",0}
 SkillModel.schema["iscanatk"] = {"boolean",false}
+SkillModel.schema["skilltype"] = {"string"}
 --[[
     target的范例
     {
@@ -83,6 +88,17 @@ SkillModel.schema["mp"] = {"number",0}
 SkillModel.schema["totalmp"] = {"number",100}
 -- SkillModel.schema["battleview"] = {"userdata"}     -- 保存战场视图对象 
 
+SkillModel.DISABLE_STATE = {
+    onenterFun = nil,
+    state = nil,
+    oneLeaveFun = nil,
+}
+
+SkillModel.ENABLE_STATE = {
+    onenterFun = nil,
+    state = nil,
+    oneLeaveFun = nil,
+}
 
 function SkillModel:ctor(properties, events, callbacks)
     SkillModel.super.ctor(self, properties)
@@ -96,10 +112,8 @@ function SkillModel:ctor(properties, events, callbacks)
     local defaultEvents = {
         -- 初始化后，角色处于 攻击 状态
         {name = "start",  from = "none",    to = "idle" },
-        {name = "enready",    from = "*",     to = "ready"},
-        {name = "enatk",    from = "ready",  to = "atk"},
+        {name = "enatk",    from = "idle",  to = "atk"},
         {name = "endatk",   from = "atk",   to = "idle"},
-        {name = "off",  from = "",  to = "disable"},
         {name = "todie",    from = "*",      to = "die"}
     }
     -- 如果继承类提供了其他事件，则合并
@@ -127,6 +141,25 @@ function SkillModel:ctor(properties, events, callbacks)
     self.mpCdTime_ = 0 -- 魔法值的cd时间 为零可以释放
     self.fsm__:doEvent("start") -- 启动状态机 直接闲置状态
 
+    self.cdtime_ = math.random(5,7)
+
+    self.DISABLE_STATE = {
+        onenterFun = function (  )
+            self:dispatchEvent({name = SkillModel.SKILL_DISABLE_ATK_EVENT, skill = self})
+        end,
+        state = "disable",
+        oneLeaveFun = self.leaveDisableStateFun,
+    }
+
+    self.ENABLE_STATE = {
+        onenterFun = function(  )
+            self:dispatchEvent({name = SkillModel.SKILL_ENABLE_ATK_EVENT, skill = self})
+        end,
+        state = "enable",
+        oneLeaveFun = self.leaveEnableStateFun,
+    }
+    self.enableState_ = self.DISABLE_STATE
+
     -- 一个定时器，用来向控制器发送是否已伤害的信息
     local function sentDamage(  )
         if self:isCanSentDamage() then
@@ -144,8 +177,10 @@ function SkillModel:ctor(properties, events, callbacks)
         if self.cdtime_ > 0 then
             self.cdtime_ = self.cdtime_ - 0.1
             self:dispatchEvent({name = SkillModel.SKILL_CD_CHANGE_EVENT, skill = self})
-        else
             -- 发出可以攻击的通知
+        end
+        if self.cdtime_ <= 0 then
+            -- 当cd时间结束的时候，每一次循环都会向英雄发送攻击的请求
             self:wantToAtk()
         end
     end
@@ -159,6 +194,19 @@ function SkillModel:isMpFull(  )
         return true
     end
     return false
+end
+
+-- 更改技能是否可以攻击的状态
+function SkillModel:setSkillAtkState( flag )
+    if flag then
+        self:changeState(self.ENABLE_STATE)
+    else
+        self:changeState(self.DISABLE_STATE)
+    end
+end
+
+function SkillModel:getIsCanAtk(  )
+    return self.enableState_.state == "enable"
 end
 
 -- 取消了技能释放
@@ -196,7 +244,39 @@ function SkillModel:updateSkillMp( heroMp )
     else 
         self.mp_ = heroMp
     end
-    self:dispatchEvent({ name = SkillModel.MP_CHANGE_EVENT })
+    -- self:dispatchEvent({ name = SkillModel.MP_CHANGE_EVENT })
+end
+
+-- 改变是否可以攻击状态的方法
+function SkillModel:changeState( state_ )
+    if state_.state ~= self.enableState_.state then
+        if self.enableState_.oneLeaveFun then
+            self.enableState_.oneLeaveFun()
+        end
+        if state_.onenterFun then
+            state_.onenterFun()
+        end
+        self.enableState_ = state_
+    end
+end
+
+function SkillModel:enterEnableStateFun(  )
+    -- 进入可以激活攻击的状态
+    self:dispatchEvent({name = SkillModel.SKILL_ENABLE_ATK_EVENT})
+    -- self:dispatchEvent({name = SkillModel.SKILL_ENABLE_ATK_EVENT, skill = self})
+end
+
+function SkillModel:leaveEnableStateFun(  )
+    
+end
+
+function SkillModel:enterDisableStateFun(  )
+    -- 进入不可以激活攻击的状态
+    -- self:dispatchEvent({name = SkillModel.SKILL_DISABLE_ATK_EVENT, skill = self})
+end
+
+function SkillModel:leaveDisableStateFun(  )
+    
 end
 
 -- 用户发动攻击的方法
@@ -308,6 +388,10 @@ end
 
 function SkillModel:getState(  )
     return self.fsm__:getState()
+end
+
+function SkillModel:heroSkillType(  )
+    return self.skilltype_
 end
 
 -- 获取攻击类型

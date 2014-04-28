@@ -45,21 +45,22 @@ function SkillCard:ctor(skill,hero)
     local cls = skill.class
     cc.EventProxy.new(skill, self)
         :addEventListener(cls.MP_CHANGE_EVENT, self.onMPChange_, self)
-        :addEventListener(cls.MP_FULL_EVENT, self.onMPFull_, self)
         :addEventListener(cls.SKILL_CD_CHANGE_EVENT, self.skillCdTimeChange_, self)
-        :addEventListener(cls.SKILL_CD_OVER_EVENT, self.skillCdTimeOver_, self)
-        :addEventListener(cls.SKILL_CAN_ATK_STATE_CHANGE_EVENT, self.onCanAtkStateChange_, self)
+        :addEventListener(cls.SKILL_ENABLE_ATK_EVENT, self.enableAtkState_, self)
+        :addEventListener(cls.SKILL_DISABLE_ATK_EVENT, self.disableAtkState_, self)
 
     local cls = hero.class
     cc.EventProxy.new(hero, self)
         :addEventListener(cls.HERO_HP_CHANGE_EVENT, self.onHeroHpChange_, self)
+        :addEventListener(cls.HERO_MP_CHANGE_EVENT, self.onMPChange_, self)
         :addEventListener(cls.HERO_CURRENT_IN_DIZZY_EVENT, self.onHeroInDizzy_, self)
         :addEventListener(cls.HERO_RELIEVE_DIZZY_EVENT, self.onHeroLeaveDizzy_, self)
-        :addEventListener(cls.HERO_MP_CHANGE_EVENT, self.onMPChange_, self)
 
     self.skill_ = skill
     self.hero_ = hero
     self.sprite_ = display.newSprite():addTo(self)  -- 所有sprite的容器
+
+    self.releaseSkillFlag_ = false
 
     local rank = math.random(1,4)
 
@@ -135,46 +136,45 @@ end
 
 
 function SkillCard:onMpOrCDChange_( event )
-    if self.skill_:getCdTime() <= 0 and self.hero_:getMp() >= self.skill_:getTotalMp() and self.hero_:getDizzy() <= 0 then
-        self.lightSprite_:setVisible(true)
-    else
-        self.lightSprite_:setVisible(false)
-    end
+    -- if self.skill_:getCdTime() <= 0 and self.hero_:getMp() >= self.skill_:getTotalMp() and self.hero_:getDizzy() <= 0 then
+    --     self.lightSprite_:setVisible(true)
+    -- else
+    --     self.lightSprite_:setVisible(false)
+    -- end
 end
 
 -- 对技能模型的消息的处理
+function SkillCard:enableAtkState_( event )
+    self.releaseSkillFlag_ = true
+    self.lightSprite_:setVisible(true)
+end
+
+function SkillCard:disableAtkState_( event )
+    self.releaseSkillFlag_ = false
+    self.lightSprite_:setVisible(false)
+end
+
 function SkillCard:skillCdTimeChange_(  )
-    self:onMpOrCDChange_()
-    self.skillCDLabel_:setString(self.skill_:getCdTime() > 0 and math.floor(self.skill_:getCdTime()) or "")
+    self.skillCDLabel_:setString(self.skill_:getCdTime() > 0 and math.ceil(self.skill_:getCdTime()) or "")
 end
 
 function SkillCard:onHeroHpChange_( event )
-    self:onMpOrCDChange_()
     self.hpProgress_:runAction(CCProgressFromTo:create(0.1, self.hpProgress_:getPercentage(), event.hp / event.totalhp * 100))
-end
-
-function SkillCard:skillCdTimeOver_(  )
-    self:onMpOrCDChange_()
-    self.skillCDLabel_:setString("")
 end
 -- 判断技能是否可以释放
 function SkillCard:getReleaseSkillFlag( )
-    return self.skill_:getMp(  )  >= self.skill_:getTotalMp(  ) and self.skill_:getCdTime() <= 0 
+    -- return self.skill_:getMp(  )  >= self.skill_:getTotalMp(  ) and self.skill_:getCdTime() <= 0 
 end
 
 function SkillCard:onSkillTaped_( tag )
-    if self:getReleaseSkillFlag() then
+    if self.releaseSkillFlag_ then
         self.skill_:playerLaunchAtk()
     end
 end
-
 function SkillCard:onMPChange_( event )
-    self:onMpOrCDChange_()
-    self.mpProgress_:runAction(CCProgressFromTo:create(0.2, self.mpProgress_:getPercentage(), self.hero_:getMp(  ) / self.skill_:getTotalMp(  ) * 100))
+    self.mpProgress_:setPercentage(self.hero_:getMp(  ) / self.skill_:getTotalMp(  ) * 100)
 end
-
 function SkillCard:onMPFull_( event )
-    self:onMpOrCDChange_()
     self.mpProgress_:setPercentage(self.skill_:getMp(  ) / self.skill_:getTotalMp(  ) * 100)
 end
 
@@ -183,11 +183,11 @@ function SkillCard:setCostomColor()
 end
 
 function SkillCard:onHeroInDizzy_( event )
-    self:onMpOrCDChange_()
+
 end
 
 function SkillCard:onHeroLeaveDizzy_( event )
-    self:onMpOrCDChange_()
+
 end
 
 return SkillCard

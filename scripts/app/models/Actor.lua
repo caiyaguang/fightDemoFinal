@@ -65,6 +65,7 @@ Actor.ENTER_IDLE_EVENT = "ENTER_IDLE_EVENT"
 
 -- 血量发生改变
 Actor.HERO_HP_CHANGE_EVENT = "HERO_HP_CHANGE_EVENT"
+
 Actor.HERO_MP_CHANGE_EVENT = "HERO_MP_CHANGE_EVENT"
 
 
@@ -80,7 +81,6 @@ Actor.schema["sid"]      = {"string"}
 Actor.schema["level"]    = {"number", 1} -- 数值类型，默认值 1
 Actor.schema["totalhp"]       = {"number", 100}
 Actor.schema["hp"]       = {"number", 1}
-Actor.schema["mp"]       = {"number", 0}        -- 魔法值
 Actor.schema["totalmp"]     = {"number", 0}     -- 一个英雄总的魔法值
 Actor.schema["exp"]       = {"number", 0}       -- 经验值
 Actor.schema["cardIcon"] = {"string"}           -- 技能图片
@@ -107,6 +107,8 @@ Actor.schema["totalmp"]     = {"number", 100}
 Actor.schema["targets"] = {"table",nil}
 -- 英雄本次攻击发动的技能
 Actor.schema["currentAtkSkill"] = {"table",nil}
+
+Actor.schema["canAtkTargets"] = {"table",{}}
 
 
 function Actor:ctor(properties, events, callbacks)
@@ -185,6 +187,9 @@ function Actor:ctor(properties, events, callbacks)
     self:getSkills().giftSkill:setHeroTotalHp(self:getTotalHp())
     self.fsm__:doEvent("start") -- 启动状态机
 
+    self.giftSkill_ = self:getSkills().giftSkill
+    self.commonSkill_ = self:getSkills().commonSkill
+
     function updateProperty(  )
         local dt = 0.1
         if self.dizzy_ > 0 then
@@ -199,13 +204,30 @@ function Actor:ctor(properties, events, callbacks)
         end
         self:addMp(1)
         self:dispatchEvent({ name = Actor.HERO_HP_CHANGE_EVENT, hp = self.hp_, totalhp = self.totalhp_})
-        self:getSkills().giftSkill:updateSkillMp(self.mp_)
-        self:getSkills().commonSkill:updateSkillMp(self.mp_)
+        -- 计算某一个技能是不是可以攻击如果可以，就发送可以攻击的消息
+        if self.dizzy_ <= 0 and self:getHp() > 0 then
+            -- 判断天赋技能是否还有目标
+            local i = 0
+            for k,v in pairs(self.canAtkTargets_) do
+                if not v:isDead() then
+                    i = i + 1
+                end
+            end
+            self.giftSkill_:setSkillAtkState( self.giftSkill_:getTotalMp() <= self:getMp() and self.giftSkill_:getCdTime() <= 0 and i > 0 and self:getState() ~= "underatk")
+            self.commonSkill_:setSkillAtkState( self.commonSkill_:getTotalMp() <= self:getMp() and self.commonSkill_:getCdTime() <= 0 and self:getState() ~= "underatk")
+
+            -- 检查自己技能的状态，开始发动攻击
+            if self.commonSkill_:getIsCanAtk() then
+                self:dispatchEvent({name = Actor.PLAYER_MODEL_LAUNCH_SKILL_ATK, atker = self, skill = self.commonSkill_})
+            end
+        else
+            -- 发送不可攻击的消息
+            self.giftSkill_:setSkillAtkState( false )
+            self.commonSkill_:setSkillAtkState( false )
+        end
     end
 
     self.schedulerCDHandle_ = scheduler.scheduleGlobal(updateProperty, 0.1) 
-
-
 end
 
 --[[
@@ -229,13 +251,21 @@ end
 
 function Actor:beginAtkAction( targets,skill )
     -- 记录这次攻击的目标和技能
-    self:setTargets(targets)
-    self:setCurrentAtkSkill(skill)
-    -- 减魔法和增加cd值
+    if self:getState() ~= "underatk" then
+        if self:getCurrentAtkSkill() and (self:getCurrentAtkSkill():heroSkillType() ~= "commonskill" or skill:heroSkillType() ~= "giftskill") then
+            return
+        else
+            -- 取消当前的攻击状态
+            self:cancelAtkAction()
 
-    self:getCurrentAtkSkill():setCdTime(math.random(1,6))
-    self:decreaseMp(1000)
-    self.fsm__:doEvent("atking")
+            self:setTargets(targets)
+            self:setCurrentAtkSkill(skill)
+            -- 减魔法和增加cd值
+            self:getCurrentAtkSkill():setCdTime(math.random(1,6))
+            self:decreaseMp(skill:getTotalMp())
+            self.fsm__:doEvent("atking")
+        end
+    end
 end
 
 -- 判断是否可以进行攻击
@@ -342,6 +372,10 @@ function Actor:onSkillCdTimeOver_( event )
     -- 得到发动攻击的技能
     -- 判断是否可以发动某个技能攻击
     
+end
+
+function Actor:setCanAtkTargets( value )
+    self.canAtkTargets_ = value
 end
 
 -- 取消英雄的攻击动作（打断）
